@@ -1,0 +1,39 @@
+services:
+  # Servicio de Base de Datos
+  db:
+    image: postgres:15-alpine
+    container_name: starwars_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=adminpassword
+      - POSTGRES_DB=StarWarsDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - starwars-network
+
+  # Servicio de tu API .NET
+  api:
+    build:
+      context: .
+      dockerfile: src/StarWars.Api/Dockerfile
+    container_name: starwars_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Cadena de conexión apuntando al servicio 'db' (nombre del contenedor)
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=StarWarsDb;Username=admin;Password=adminpassword
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - starwars-network
+
+volumes:
+  postgres_data:
+
+networks:
+  starwars-network:
+    driver: bridge
