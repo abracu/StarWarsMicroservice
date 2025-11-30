@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{577A4C7D-FBF4-4C91-98F1-0A78157E61E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars.Domain", "src\StarWars.Domain\StarWars.Domain.csproj", "{891A85A3-2F24-4959-B0A2-363056293658}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars.Application", "src\StarWars.Application\StarWars.Application.csproj", "{37944144-CFA0-4352-A7FF-535EFB8D96E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars.Infrastructure", "src\StarWars.Infrastructure\StarWars.Infrastructure.csproj", "{FC268818-D064-426C-AA7A-B14854A7C018}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars.Api", "src\StarWars.Api\StarWars.Api.csproj", "{0825CFBA-0C5A-437C-A772-2A1DAEE248CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars.ConsoleClient", "src\StarWars.ConsoleClient\StarWars.ConsoleClient.csproj", "{C5F2B69B-1647-4A28-A77D-80F2EC011F7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1E62344D-14D7-4F99-A098-643F12BE86B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars.UnitTests", "tests\StarWars.UnitTests\StarWars.UnitTests.csproj", "{2F6475E1-8E57-43A7-9108-23A7237E7DB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{891A85A3-2F24-4959-B0A2-363056293658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891A85A3-2F24-4959-B0A2-363056293658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891A85A3-2F24-4959-B0A2-363056293658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891A85A3-2F24-4959-B0A2-363056293658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37944144-CFA0-4352-A7FF-535EFB8D96E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37944144-CFA0-4352-A7FF-535EFB8D96E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37944144-CFA0-4352-A7FF-535EFB8D96E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37944144-CFA0-4352-A7FF-535EFB8D96E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC268818-D064-426C-AA7A-B14854A7C018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC268818-D064-426C-AA7A-B14854A7C018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC268818-D064-426C-AA7A-B14854A7C018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC268818-D064-426C-AA7A-B14854A7C018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0825CFBA-0C5A-437C-A772-2A1DAEE248CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0825CFBA-0C5A-437C-A772-2A1DAEE248CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0825CFBA-0C5A-437C-A772-2A1DAEE248CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0825CFBA-0C5A-437C-A772-2A1DAEE248CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5F2B69B-1647-4A28-A77D-80F2EC011F7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5F2B69B-1647-4A28-A77D-80F2EC011F7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5F2B69B-1647-4A28-A77D-80F2EC011F7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5F2B69B-1647-4A28-A77D-80F2EC011F7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F6475E1-8E57-43A7-9108-23A7237E7DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F6475E1-8E57-43A7-9108-23A7237E7DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F6475E1-8E57-43A7-9108-23A7237E7DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F6475E1-8E57-43A7-9108-23A7237E7DB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{891A85A3-2F24-4959-B0A2-363056293658} = {577A4C7D-FBF4-4C91-98F1-0A78157E61E7}
+		{37944144-CFA0-4352-A7FF-535EFB8D96E1} = {577A4C7D-FBF4-4C91-98F1-0A78157E61E7}
+		{FC268818-D064-426C-AA7A-B14854A7C018} = {577A4C7D-FBF4-4C91-98F1-0A78157E61E7}
+		{0825CFBA-0C5A-437C-A772-2A1DAEE248CB} = {577A4C7D-FBF4-4C91-98F1-0A78157E61E7}
+		{C5F2B69B-1647-4A28-A77D-80F2EC011F7D} = {577A4C7D-FBF4-4C91-98F1-0A78157E61E7}
+		{2F6475E1-8E57-43A7-9108-23A7237E7DB4} = {1E62344D-14D7-4F99-A098-643F12BE86B0}
+	EndGlobalSection
+EndGlobal
