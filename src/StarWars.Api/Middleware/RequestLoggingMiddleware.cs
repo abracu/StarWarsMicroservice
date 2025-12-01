@@ -7,7 +7,7 @@ namespace StarWars.Api.Middleware;
 public class RequestLoggingMiddleware
 {
     private readonly RequestDelegate _next;
-    // Opcional: Inyectar ILogger para logs de consola también
+    // Optional: Inject ILogger for standard console logging
     private readonly ILogger<RequestLoggingMiddleware> _logger;
 
     public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
@@ -16,22 +16,24 @@ public class RequestLoggingMiddleware
         _logger = logger;
     }
 
+    // [NOTE]: DbContext is injected here (Method Injection) instead of the constructor
+    // because Middleware is Singleton but DbContext is Scoped.
     public async Task InvokeAsync(HttpContext context, StarWarsDbContext dbContext)
     {
-        // 1. Iniciar cronómetro
+        // 1. Start the stopwatch
         var stopwatch = Stopwatch.StartNew();
 
         try
         {
-            // 2. Pasar la petición al siguiente componente (El Controlador)
+            // 2. Pass the request to the next component in the pipeline
             await _next(context);
         }
         finally
         {
-            // 3. Detener cronómetro y registrar (se ejecuta incluso si hubo error)
+            // 3. Stop the timer and log (executes even if an exception occurred)
             stopwatch.Stop();
 
-            // Construimos la entidad de log
+            // Construct the log entity
             var logEntry = new RequestLog
             {
                 Id = Guid.NewGuid(),
@@ -41,13 +43,14 @@ public class RequestLoggingMiddleware
                 StatusCode = context.Response.StatusCode,
                 Timestamp = DateTime.UtcNow,
                 DurationMs = stopwatch.ElapsedMilliseconds,
-                // Obtenemos la IP (puede ser null en local)
+                // Retrieve IP address (might be null in local development)
                 IpAddress = context.Connection.RemoteIpAddress?.ToString()
             };
 
-            // 4. Guardar en Base de Datos
-            // Nota: En producción real de altísima carga, esto se suele enviar a una cola (RabbitMQ)
-            // para no frenar la respuesta al usuario. Para esta prueba, guardar directo es aceptable.
+            // 4. Persist to Database
+            // [NOTE]: In high-load production scenarios, this should be offloaded to a 
+            // message queue (e.g., RabbitMQ) to avoid blocking the response.
+            // Direct DB persistence is acceptable for this scope.
             dbContext.RequestLogs.Add(logEntry);
             await dbContext.SaveChangesAsync();
             

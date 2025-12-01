@@ -4,6 +4,7 @@ using StarWars.Application.Interfaces;
 using StarWars.Infrastructure.ExternalApi;
 using StarWars.Api.Middleware;
 using Microsoft.Extensions.Caching.Memory;
+using ResilienceHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,10 +28,12 @@ builder.Services.AddDbContext<StarWarsDbContext>(options =>
 builder.Services.AddMemoryCache();
 
 // SWAPI Integration (Dependency Injection)
-builder.Services.AddHttpClient<SwapiService>(client =>
+builder.Services.AddHttpClient<ISwapiService, SwapiService>(client =>
 {
     client.BaseAddress = new Uri("https://swapi.dev/api/");
-});
+    client.Timeout = TimeSpan.FromSeconds(30);
+})
+.AddStandardResilienceHandler();
 
 builder.Services.AddScoped<ISwapiService>(provider =>
 {

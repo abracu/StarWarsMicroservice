@@ -4,8 +4,8 @@ namespace StarWars.Application.DTOs;
 
 public class CharacterDto
 {
-    // Usamos JsonPropertyName para mapear el snake_case de la API (birth_year)
-    // al PascalCase de C# (BirthYear) automáticamente.
+    // [NOTE]: Use JsonPropertyName to automatically map JSON snake_case (e.g., 'birth_year') 
+    // to C# PascalCase conventions.
     
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
@@ -19,7 +19,7 @@ public class CharacterDto
     [JsonPropertyName("height")]
     public string Height { get; set; } = string.Empty;
 
-    // La URL es vital porque actúa como ID único en SWAPI
+    // The URL is critical as it serves as the unique identifier within the SWAPI ecosystem
     [JsonPropertyName("url")]
     public string Url { get; set; } = string.Empty;
 }
