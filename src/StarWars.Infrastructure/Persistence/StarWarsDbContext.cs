@@ -12,7 +12,8 @@ public class StarWarsDbContext : DbContext
     // Define database tables (DbSets)
     public DbSet<RequestLog> RequestLogs { get; set; }
     
-    public DbSet<FavoriteCharacter> FavoriteCharacters { get; set; }
+    // We uncomment this now as the entity exists
+    public DbSet<FavoriteCharacter> FavoriteCharacters { get; set; } 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,18 +40,11 @@ public class StarWarsDbContext : DbContext
         modelBuilder.Entity<FavoriteCharacter>(entity =>
         {
             entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(100);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Url).IsRequired().HasMaxLength(250);
 
-            entity.Property(e => e.Url)
-                .IsRequired()
-                .IsUnique();
-                .HasMaxLength(250);
-
-            entity.Property(e => e.AddedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP"); // Default value in PostgreSQL
+            // Unique Index: Prevents duplicate entries for the same character
+            entity.HasIndex(e => e.Url).IsUnique();
         });
     }
 }

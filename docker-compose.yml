@@ -13,7 +13,13 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - starwars-network
-
+  redis:
+    image: redis:alpine
+    container_name: starwars_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - starwars-network
   # Servicio de tu API .NET
   api:
     build:
@@ -24,13 +30,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       # Cadena de conexión apuntando al servicio 'db' (nombre del contenedor)
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=StarWarsDb;Username=admin;Password=adminpassword
+      - ConnectionStrings__Redis=redis:6379
     ports:
       - "8080:8080"
     depends_on:
       - db
+      - redis
     networks:
       - starwars-network
-
 volumes:
   postgres_data:
 

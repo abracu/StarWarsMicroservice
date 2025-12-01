@@ -3,8 +3,7 @@ using StarWars.Infrastructure.Persistence;
 using StarWars.Application.Interfaces;
 using StarWars.Infrastructure.ExternalApi;
 using StarWars.Api.Middleware;
-using Microsoft.Extensions.Caching.Memory;
-using ResilienceHandler;
+using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,31 +13,43 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Swagger Configuration (Swashbuckle)
+// Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Database Context
-//! [NOTE]: Retrieve connection string
+// [NOTE]: Retrieve connection string from environment variables
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StarWarsDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Caching
-builder.Services.AddMemoryCache();
+// Redis Caching Configuration
+// [NOTE]: Using IDistributedCache backed by Redis (Scalable)
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    // Retrieve connection string from env vars (defined in docker-compose as ConnectionStrings__Redis)
+    // Fallback to localhost for local development if null
+    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
+    options.InstanceName = "StarWars_"; // Prefix for all keys in Redis
+});
 
-// SWAPI Integration (Dependency Injection)
-builder.Services.AddHttpClient<ISwapiService, SwapiService>(client =>
+// SWAPI Integration (Concrete Service Registration)
+builder.Services.AddHttpClient<SwapiService>(client =>
 {
     client.BaseAddress = new Uri("https://swapi.dev/api/");
     client.Timeout = TimeSpan.FromSeconds(30);
-})
-.AddStandardResilienceHandler();
+});
 
+// Decorator Registration (Cached Service)
 builder.Services.AddScoped<ISwapiService>(provider =>
 {
+    // 1. Get the real logic service
     var swapiService = provider.GetRequiredService<SwapiService>();
-    var cache = provider.GetRequiredService<IMemoryCache>();
+    
+    // 2. Get the Distributed Cache (Redis) instead of Memory Cache
+    var cache = provider.GetRequiredService<IDistributedCache>(); 
+    
+    // 3. Return the decorator wrapping the real service
     return new CachedSwapiService(swapiService, cache);
 });
 
@@ -48,7 +59,7 @@ var app = builder.Build();
 // 2. HTTP Request Pipeline
 // ==========================================
 
-// Apply migrations automatically
+// Apply migrations automatically at startup
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<StarWarsDbContext>();
@@ -71,4 +82,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run(); 
+app.Run();
