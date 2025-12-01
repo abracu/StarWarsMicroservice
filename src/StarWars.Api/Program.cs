@@ -4,6 +4,7 @@ using StarWars.Application.Interfaces;
 using StarWars.Infrastructure.ExternalApi;
 using StarWars.Api.Middleware;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,13 @@ builder.Services.AddControllers();
 
 // Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Generamos el nombre del archivo XML basándonos en el nombre del ensamblado (StarWars.Api.xml)
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    // Combinamos con la ruta base de ejecución (funciona en Docker y Local)
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 // Database Context
 // [NOTE]: Retrieve connection string from environment variables
