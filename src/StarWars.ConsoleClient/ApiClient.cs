@@ -50,4 +50,13 @@ public class ApiClient
         }
         catch (Exception) { return new(); }
     }
+
+    public async Task<List<ApiLog>> GetLogsAsync()
+    {
+        try
+        {
+            return await _http.GetFromJsonAsync<List<ApiLog>>("logs?count=20") ?? new();
+        }
+        catch (Exception) { return new(); }
+    }
 }
