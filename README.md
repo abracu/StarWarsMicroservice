@@ -14,15 +14,12 @@ El proyecto está estructurado en capas concéntricas para garantizar la separac
   - **API:** Punto de entrada RESTful, configuración de contenedores y Middlewares.
 
 ## 🛠️ Stack Tecnológico
-
-| Componente | Tecnología |
-|Data | **PostgreSQL 15** |
-| Cache | **Redis** (Distributed Caching) |
-| Backend | **.NET 8 (C\#)** |
-| ORM | **Entity Framework Core** (Code-First) |
-| Containerización | **Docker & Docker Compose** |
-| CLI Client | **Spectre.Console** |
-| Testing | **xUnit** |
+  - **Data** PostgreSQL 15
+  - **Cache** Redis (Distributed Caching)
+  - **ORM** Entity Framework Core (Code-First)
+  - **Containerización** Docker & Docker Compose
+  - **CLI Client** Spectre.Console
+  - **Testing** xUnit
 
 ## 🚀 Quick Start
 
@@ -48,8 +45,12 @@ La solución es "Cloud-Native ready". No necesitas instalar el runtime de .NET n
     ```
 
     > Esto levantará la API, la base de datos PostgreSQL y el servidor Redis.
-
-3.  **Acceder a la documentación:**
+    
+3.  **Correr los Test**
+    ```bash
+    dotnet test
+    ```
+4.  **Acceder a la documentación:**
     Navega a: [http://localhost:8080/swagger](https://www.google.com/search?q=http://localhost:8080/swagger)
 
 -----
