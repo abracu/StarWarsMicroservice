@@ -18,17 +18,17 @@ public class CharactersControllerTests
 
     public CharactersControllerTests()
     {
-        // 1. Mock del servicio externo
+        // 1. Mock the external service dependency
         _mockSwapiService = new Mock<ISwapiService>();
 
-        // 2. Base de datos en memoria (Simula Postgres)
+        // 2. Setup In-Memory Database (Simulates PostgreSQL)
         var options = new DbContextOptionsBuilder<StarWarsDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Nombre único por test
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique name per test ensures isolation
             .Options;
         
         _dbContext = new StarWarsDbContext(options);
 
-        // 3. Instanciar el controlador con las dependencias simuladas
+        // 3. Instantiate the Controller (System Under Test) with dependencies
         _controller = new CharactersController(_mockSwapiService.Object, _dbContext);
     }
 
@@ -44,7 +44,7 @@ public class CharactersControllerTests
         var result = await _controller.Get(1);
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result); // Verifica que sea 200 OK
+        var okResult = Assert.IsType<OkObjectResult>(result); // Verify response is 200 OK
         var returnCharacters = Assert.IsAssignableFrom<IEnumerable<CharacterDto>>(okResult.Value);
         Assert.Single(returnCharacters);
     }
@@ -59,11 +59,11 @@ public class CharactersControllerTests
         var result = await _controller.AddFavorite(newFavorite);
 
         // Assert
-        // 1. Verificar respuesta HTTP
+        // 1. Verify HTTP Response status
         var createdResult = Assert.IsType<CreatedAtActionResult>(result);
         Assert.Equal(201, createdResult.StatusCode);
 
-        // 2. Verificar que se guardó en la "Base de Datos"
+        // 2. Verify data persistence in the DB
         var savedFav = await _dbContext.FavoriteCharacters.FirstOrDefaultAsync(f => f.Url == "url/vader");
         Assert.NotNull(savedFav);
         Assert.Equal("Darth Vader", savedFav.Name);
